@@ -7,6 +7,7 @@ class UserPermissions(permissions.BasePermission):
 
     def has_permission(self, request, view):
         if view.action == 'list':
+            print(request.user.type)
             return request.user.type in ('ADMIN', 'COMPANY')
         elif view.action == 'create':
             return request.user.type in ('ADMIN', 'COMPANY')
