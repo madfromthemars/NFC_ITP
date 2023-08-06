@@ -3,8 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from django.http.response import FileResponse
-from .permission import UserPermissions, OrderPermissions
 from django.db.utils import IntegrityError
+from django.contrib.auth.hashers import make_password
+
+from .permission import UserPermissions, OrderPermissions
 
 # Local 
 from .models import User, Order
@@ -149,6 +151,7 @@ class UserViewSet(ModelViewSet):
         try:
             pk = kwargs.get("pk", None)
             user = User.objects.get(id=pk)
+            request.data['password'] = make_password(request.data.get('password'))
             serializer = self.serializer_class(user, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()

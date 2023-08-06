@@ -116,7 +116,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
 
-
 class OrderSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(required=True)
