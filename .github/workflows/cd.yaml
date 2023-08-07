@@ -21,9 +21,11 @@ jobs:
           port: 22
           script: |
             cd /www/wwwroot/nfcglobaltech.uz
-            echo ${{ secrets.PASSWORD }} sudo -S git pull https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/IT-Park-Dev/nfc.git
+            printf "${{ secrets.PASSWORD }}\n" | sudo -S git pull https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/IT-Park-Dev/nfc.git
+            sudo su
             source .venv/bin/activate
             python manage.py migrate
             python manage.py compilemessages
             deactivate
-            echo ${{ secrets.PASSWORD }} sudo -S systemctl restart gunicorn_nfc
+            sudo systemctl restart gunicorn_nfc
+            exit
