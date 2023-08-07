@@ -25,7 +25,6 @@ jobs:
             sudo su
             source .venv/bin/activate
             python manage.py migrate
-            python manage.py compilemessages
             deactivate
             sudo systemctl restart gunicorn_nfc
             exit
