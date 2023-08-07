@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import datetime
 from pathlib import Path
-from .utils import CLIENT_URL, SERVER_URL, ACCESS_TOKEN_LIFE_TIME_M, REFRESH_TOKEN_LIFE_TIME_H
+from .utils import CLIENT_URL, SERVER_URL, ACCESS_TOKEN_LIFE_TIME_M, REFRESH_TOKEN_LIFE_TIME_H, ALLOWED_HOSTS, DEBUG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5t@r#bp&lcj5yxj^ehi@a-(diqhayi9(5$5&$$oehv&xk1zrcl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = DEBUG
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ALLOWED_HOSTS
 
 # Application definition
 
