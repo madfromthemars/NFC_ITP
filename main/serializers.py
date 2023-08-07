@@ -116,7 +116,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
 
-class OrderSerializer(serializers.ModelSerializer):
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(required=True)
     updated_at = serializers.DateTimeField(read_only=True)
