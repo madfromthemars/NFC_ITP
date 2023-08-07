@@ -1,0 +1,29 @@
+name: Django CD
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+
+    steps:
+    - name: Deploy
+      uses: appleboy/ssh-action@master
+      with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.HOST_USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd /www/wwwroot/nfcglobaltech.uz
+            echo ${{ secrets.PASSWORD }} sudo -S git pull https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/IT-Park-Dev/nfc.git
+            source .venv/bin/activate
+            python manage.py migrate
+            python manage.py compilemessages
+            deactivate
+            echo ${{ secrets.PASSWORD }} sudo -S systemctl restart gunicorn_nfc
