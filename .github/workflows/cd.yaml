@@ -20,8 +20,8 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: 22
           script: |
-            cd /www/wwwroot/nfcglobaltech.uz
-            printf "${{ secrets.PASSWORD }}\n" | sudo -S git pull https://${{ secrets.TOKEN }}:x-oauth-basic@github.com/IT-Park-Dev/nfc.git
+            cd /www/wwwroot/nfcglobaltech.uz/nfc
+            printf "${{ secrets.PASSWORD }}\n" | sudo -S git pull
             sudo su
             source .venv/bin/activate
             python manage.py migrate
