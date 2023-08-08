@@ -114,6 +114,7 @@ class VCardAPIView(generics.RetrieveAPIView):
         username = kwargs.get('username', None)
         try:
             user = User.objects.get(username=username)
+            VCardFile(user)
             return FileResponse(open(f'./files/user_{user.id}.vcf', 'rb'))
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -147,7 +148,7 @@ class UserViewSet(ModelViewSet):
         except IntegrityError:
             return Response({'message': "User with such username already exists"}, status=status.HTTP_409_CONFLICT)
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         try:
             pk = kwargs.get("pk", None)
             user = User.objects.get(id=pk)

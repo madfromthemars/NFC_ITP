@@ -6,5 +6,7 @@ EMAIL:simpleUser2@mail.com
 FN:SimpleTwo User_2
 N:User_2;SimpleTwo;;;
 NICKNAME:sUser_2
+ORG:I;T;P
+ROLE:backend dev
 TEL:+999999999999
 END:VCARD

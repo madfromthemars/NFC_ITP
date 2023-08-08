@@ -24,6 +24,14 @@ def VCardFile(user):
     file.add('TEL')
     file.tel.value = user.phone
 
+    work = user.work_info
+    if type(work) is str:
+        work = eval(work)
+
+    file.add("ORG")
+    file.org.value = work.get('org' or '')
+    file.add('ROLE')
+    file.role.value = work.get('role' or '')
 
     address = user.address
     if type(address) is str:

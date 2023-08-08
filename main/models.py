@@ -19,7 +19,7 @@ class User(AbstractUser):
     phone = models.CharField(max_length=255, null=True)
     email = models.EmailField(max_length=255)
 
-    work_info = models.TextField(max_length=255, null=True)
+    work_info = models.JSONField(max_length=255, null=True)
     address = models.JSONField(max_length=255, null=True)
 
     created_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, default=None)
@@ -30,6 +30,10 @@ class User(AbstractUser):
         return self.username
 
     def get_clean_dict(self):
+        company = None
+        if self.created_by:
+            company = self.created_by.id
+
         return {
             'id': self.id,
             'username': self.username,
@@ -40,7 +44,8 @@ class User(AbstractUser):
             'email': self.email,
             'birthday': self.birthday,
             'work_info': self.work_info,
-            'address': self.address
+            'address': self.address,
+            'created_by_id': company
         }
 
     def tokens(self):
