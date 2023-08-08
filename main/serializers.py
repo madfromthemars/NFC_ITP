@@ -10,7 +10,7 @@ from .models import User, Order
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     address = serializers.DictField(allow_null=True, allow_empty=True)
-    work_info = serializers.JSONField(allow_null=True)
+    work_info = serializers.DictField(allow_null=True)
 
     class Meta:
         model = User
