@@ -170,14 +170,19 @@ class OrderViewSet(ModelViewSet):
 
 
     def retrieve(self, request, *args, **kwargs):
-        serializer = self.serializer_class(self.queryset, many=True)
-        for order in serializer.data:
-            try:
-                user = User.objects.get(id=order['user_id']).get_clean_dict()
-                order['user'] = user
-            except User.DoesNotExist:
-                order['user'] = None
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        try:
+            pk = kwargs.get("id", None)
+            queryset = Order.objects.get(id=pk)
+            serializer = self.serializer_class(queryset, many=True)
+            for order in serializer.data:
+                try:
+                    user = User.objects.get(id=order['user_id']).get_clean_dict()
+                    order['user'] = user
+                except User.DoesNotExist:
+                    order['user'] = None
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Order.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
 
     def list(self, request, *args, **kwargs):
         if request.user.type == "COMPANY":
