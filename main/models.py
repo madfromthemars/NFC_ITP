@@ -25,6 +25,7 @@ class User(AbstractUser):
     created_by = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    theme = models.CharField(max_length=255, null=True, default=None)
 
     def __str__(self):
         return self.username
@@ -45,7 +46,8 @@ class User(AbstractUser):
             'birthday': self.birthday,
             'work_info': self.work_info,
             'address': self.address,
-            'created_by_id': company
+            'created_by_id': company,
+            'theme': self.theme
         }
 
     def tokens(self):

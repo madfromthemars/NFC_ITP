@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib import auth
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework_simplejwt.tokens import RefreshToken, TokenError, AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 # Local
 from .models import User, Order
@@ -16,7 +16,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'username', 'password',
                   'first_name', 'last_name', 'birthday',
-                  'phone', 'work_info', 'address', 'type']
+                  'phone', 'work_info', 'address', 'type', 'theme']
         extra_kwargs = {
             'first_name': {'required': False},
             'last_name': {'required': False},
@@ -25,6 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'work_info': {'required': False},
             'address': {'required': False},
             'type': {'required': False},
+            'theme': {'required': False}
         }
 
     def validate(self, attrs):
@@ -99,12 +100,14 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     address = serializers.JSONField(allow_null=True)
 
     created_by_id = serializers.IntegerField(default=None, allow_null=True)
+    theme = serializers.CharField(max_length=255, required=False, allow_null=True, default=None)
 
     class Meta:
         model = User
         fields = (
             'id', 'username', 'type', 'first_name', 'last_name', 'birthday',
             'phone', 'email', 'work_info', 'address', 'created_by_id', 'password',
+            'theme'
         )
 
     def create(self, validated_data):
