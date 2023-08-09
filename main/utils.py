@@ -30,7 +30,7 @@ def VCardFile(user):
             work = eval(work)
 
         file.add("ORG")
-        file.org.value = work.get('org' or '')
+        file.org.value = work.get('org' or '').title()
         file.add('ROLE')
         file.role.value = work.get('role' or '')
     except Exception:
