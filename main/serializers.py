@@ -87,6 +87,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)
 
     username = serializers.CharField(required=True, max_length=255)
+    password = serializers.CharField(write_only=True, required=False)
     type = serializers.CharField(default="REGULAR", read_only=True)
 
     first_name = serializers.CharField(required=True, max_length=255)

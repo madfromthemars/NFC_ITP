@@ -152,8 +152,9 @@ class UserViewSet(ModelViewSet):
         try:
             pk = kwargs.get("pk", None)
             user = User.objects.get(id=pk)
-            request.data['password'] = make_password(request.data.get('password'))
-            serializer = self.serializer_class(user, data=request.data)
+            if request.data.get('password'):
+                request.data['password'] = make_password(request.data.get('password'))
+            serializer = self.serializer_class(user, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             VCardFile(user)
