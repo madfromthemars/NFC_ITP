@@ -173,15 +173,15 @@ class OrderViewSet(ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         try:
-            pk = kwargs.get("id", None)
+            pk = kwargs.get("pk", None)
             queryset = Order.objects.get(id=pk)
-            serializer = self.serializer_class(queryset, many=True)
-            for order in serializer.data:
-                try:
-                    user = User.objects.get(id=order['user_id']).get_clean_dict()
-                    order['user'] = user
-                except User.DoesNotExist:
-                    order['user'] = None
+            serializer = self.serializer_class(queryset)
+            order = serializer.data
+            try:
+                user = User.objects.get(id=order.get('user_id')).get_clean_dict()
+                order['user'] = user
+            except User.DoesNotExist:
+                order['user'] = None
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)

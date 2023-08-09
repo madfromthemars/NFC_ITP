@@ -10,7 +10,7 @@ from .models import User, Order
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=68, min_length=6, write_only=True)
     address = serializers.DictField(allow_null=True, allow_empty=True)
-    work_info = serializers.DictField(allow_null=True)
+    work_info = serializers.DictField(allow_null=True, required=False)
 
     class Meta:
         model = User
@@ -120,7 +120,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
         return user
 
 
-class OrderSerializer(serializers.HyperlinkedModelSerializer):
+class OrderSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(required=True)
     updated_at = serializers.DateTimeField(read_only=True)

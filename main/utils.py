@@ -24,14 +24,16 @@ def VCardFile(user):
     file.add('TEL')
     file.tel.value = user.phone
 
-    work = user.work_info
-    if type(work) is str:
+    try:
+        work = user.work_info
         work = eval(work)
 
-    file.add("ORG")
-    file.org.value = work.get('org' or '')
-    file.add('ROLE')
-    file.role.value = work.get('role' or '')
+        file.add("ORG")
+        file.org.value = work.get('org' or '')
+        file.add('ROLE')
+        file.role.value = work.get('role' or '')
+    except Exception:
+        print("Without address")
 
     address = user.address
     if type(address) is str:
