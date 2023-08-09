@@ -1,0 +1,12 @@
+BEGIN:VCARD
+VERSION:3.0
+ADR:;;;Turin;Turin;;Turin
+BDAY:1999-09-09
+EMAIL:simpleUser@mail.com
+FN:Simpleeeee User
+N:User;Simpleeeee;;;
+NICKNAME:sUser4
+ORG:I;T;P
+ROLE:backend dev
+TEL:+999999999999
+END:VCARD

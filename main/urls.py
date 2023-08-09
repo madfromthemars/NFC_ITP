@@ -17,7 +17,7 @@ urlpatterns = [
     path('login', LoginAPIView.as_view(), name='login'),
     path('logout', LogoutAPIView.as_view(), name='logout'),
     path('', include(router.urls)),
-    path('contact/<int:username>', ContactAPIView.as_view(), name='contact'),
+    path('contact/<str:username>', ContactAPIView.as_view(), name='contact'),
     path('vcard/<str:username>', VCardAPIView.as_view(), name='vcard'),
     path('token/refresh', TokenRefreshView.as_view(), name="token_refresh"),
 ]

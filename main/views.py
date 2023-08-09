@@ -3,8 +3,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from django.http.response import FileResponse
-from .permission import UserPermissions, OrderPermissions
 from django.db.utils import IntegrityError
+from django.contrib.auth.hashers import make_password
+
+from .permission import UserPermissions, OrderPermissions
 
 # Local 
 from .models import User, Order
@@ -112,6 +114,7 @@ class VCardAPIView(generics.RetrieveAPIView):
         username = kwargs.get('username', None)
         try:
             user = User.objects.get(username=username)
+            VCardFile(user)
             return FileResponse(open(f'./files/user_{user.id}.vcf', 'rb'))
         except User.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
@@ -145,11 +148,13 @@ class UserViewSet(ModelViewSet):
         except IntegrityError:
             return Response({'message': "User with such username already exists"}, status=status.HTTP_409_CONFLICT)
 
-    def update(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         try:
             pk = kwargs.get("pk", None)
             user = User.objects.get(id=pk)
-            serializer = self.serializer_class(user, data=request.data)
+            if request.data.get('password'):
+                request.data['password'] = make_password(request.data.get('password'))
+            serializer = self.serializer_class(user, data=request.data, partial=True)
             serializer.is_valid(raise_exception=True)
             serializer.save()
             VCardFile(user)
@@ -165,12 +170,36 @@ class OrderViewSet(ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
+
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            pk = kwargs.get("pk", None)
+            queryset = Order.objects.get(id=pk)
+            serializer = self.serializer_class(queryset)
+            order = serializer.data
+            try:
+                user = User.objects.get(id=order.get('user_id')).get_clean_dict()
+                order['user'] = user
+            except User.DoesNotExist:
+                order['user'] = None
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Order.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
     def list(self, request, *args, **kwargs):
         if request.user.type == "COMPANY":
             queryset = Order.objects.filter(user__created_by_id=request.user.id).all()
             serializer = self.serializer_class(queryset, many=True)
         else:
             serializer = self.serializer_class(self.queryset, many=True)
+
+        for order in serializer.data:
+            try:
+                user = User.objects.get(id=order['user_id']).get_clean_dict()
+                order['user'] = user
+            except User.DoesNotExist:
+                order['user'] = None
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
