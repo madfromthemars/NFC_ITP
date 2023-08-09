@@ -26,24 +26,28 @@ def VCardFile(user):
 
     try:
         work = user.work_info
-        work = eval(work)
+        if type(work) is str:
+            work = eval(work)
 
         file.add("ORG")
         file.org.value = work.get('org' or '')
         file.add('ROLE')
         file.role.value = work.get('role' or '')
     except Exception:
-        print("Without address")
+        print("Without Work Info")
 
     address = user.address
-    if type(address) is str:
-        address = eval(address)
-    file.add("ADR")
-    file.adr.value = vcard.Address(
-        street=(address.get('address') or ""),
-        city=(address.get('city') or ""),
-        region=(address.get('city') or ""),
-        country=(address.get('city') or ""))
+    try:
+        if type(address) is str:
+            address = eval(address)
+        file.add("ADR")
+        file.adr.value = vcard.Address(
+            street=(address.get('address') or ""),
+            city=(address.get('city') or ""),
+            region=(address.get('city') or ""),
+            country=(address.get('city') or ""))
+    except:
+        print("Without Address")
 
     try:
         f = open(f'./files/user_{user.id}.vcf', 'w')
