@@ -1,10 +1,12 @@
 BEGIN:VCARD
 VERSION:3.0
-ADR:;;;Turin;Turin;;Turin
-BDAY:1999-09-09
+ADR:;;;;;;
+BDAY:None
 EMAIL:
-FN:Simple User_2
-N:User_2;Simple;;;
-NICKNAME:sCompany
-TEL:+888888888888
+FN:awdadw 124124daw
+N:124124daw;awdadw;;;
+NICKNAME:sUser
+ORG:I;t; ;P;a;r;k
+ROLE:Executive Director
+TEL:+12 4 1424
 END:VCARD

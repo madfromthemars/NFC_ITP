@@ -129,9 +129,11 @@ class UserViewSet(ModelViewSet):
         if request.user.type == "COMPANY":
             queryset = User.objects.filter(created_by=request.user.id).all()
             serializer = self.serializer_class(queryset, many=True)
+            return Response(serializer.data)
         else:
-            serializer = self.serializer_class(self.queryset, many=True)
-        return Response(serializer.data)
+            queryset = User.objects.filter(is_superuser=False).all()
+            serializer = self.serializer_class(queryset, many=True)
+            return Response(serializer.data)
 
     def create(self, request, *args, **kwargs):
         try:
@@ -182,7 +184,9 @@ class OrderViewSet(ModelViewSet):
                 order['user'] = user
             except User.DoesNotExist:
                 order['user'] = None
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            if request.user.type == "REGULAR" and user != request.user:
+                return Response(data={"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
+            return Response(order, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
