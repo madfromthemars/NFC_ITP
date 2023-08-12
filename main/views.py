@@ -180,12 +180,13 @@ class OrderViewSet(ModelViewSet):
             serializer = self.serializer_class(queryset)
             order = serializer.data
             try:
-                user = User.objects.get(id=order.get('user_id')).get_clean_dict()
-                order['user'] = user
+                user = User.objects.get(id=order.get('user_id'))
+                order['user'] = user.get_clean_dict()
+                if request.user.type == "REGULAR" and user != request.user:
+                    return Response(data={"detail": "You do not have permission to perform this action."},
+                                    status=status.HTTP_403_FORBIDDEN)
             except User.DoesNotExist:
                 order['user'] = None
-            if request.user.type == "REGULAR" and user != request.user:
-                return Response(data={"detail": "You do not have permission to perform this action."}, status=status.HTTP_403_FORBIDDEN)
             return Response(order, status=status.HTTP_200_OK)
         except Order.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)

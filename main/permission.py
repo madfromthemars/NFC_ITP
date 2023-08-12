@@ -41,7 +41,7 @@ class OrderPermissions(permissions.BasePermission):
             if view.action in ('list', 'retrieve'):
                 user = User.objects.get(id=obj.user_id)
                 return (
-                        obj.user_id == request.user.id or
+                        obj.user.id == request.user.id or
                         user.created_by_id == request.user.id or
                         request.user.type in ('ADMIN', 'POLYGRAPHY')
                 )
