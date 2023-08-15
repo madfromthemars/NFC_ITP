@@ -193,19 +193,19 @@ class OrderViewSet(ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         if request.user.type == "COMPANY":
-            queryset = Order.objects.filter(user__created_by_id=request.user.id).all()
-            serializer = self.serializer_class(queryset, many=True)
+            queryset = Order.objects.filter(user__created_by_id=request.user.id).all().order_by('created_at')
         else:
-            serializer = self.serializer_class(self.queryset, many=True)
-
-        for order in serializer.data:
+            queryset = Order.objects.all().order_by('created_at')
+        serializer = self.serializer_class(queryset, many=True)
+        data = serializer.data
+        for order in data:
             try:
-                user = User.objects.get(id=order['user_id']).get_clean_dict()
-                order['user'] = user
+                user = User.objects.get(id=order['user_id'])
+                order['user'] = user.get_clean_dict()
             except User.DoesNotExist:
                 order['user'] = None
+        return Response(data, status=status.HTTP_200_OK)
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request, *args, **kwargs):
         try:

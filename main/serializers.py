@@ -123,10 +123,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     user_id = serializers.IntegerField(required=True)
-    updated_at = serializers.DateTimeField(read_only=True)
+    updated_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
+    created_at = serializers.DateTimeField(read_only=True, format="%Y-%m-%d")
     status = serializers.CharField(default="NEW")
 
     class Meta:
         model = Order
-        fields = ('id', 'user_id', 'status', 'updated_at')
+        fields = ('id', 'user_id', 'status', 'updated_at', 'created_at')
 

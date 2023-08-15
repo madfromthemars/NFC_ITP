@@ -38,7 +38,7 @@ class OrderPermissions(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):
         try:
-            if view.action in ('list', 'retrieve'):
+            if view.action in ('list', 'retrieve', 'update', 'partial_update',):
                 user = User.objects.get(id=obj.user_id)
                 return (
                         obj.user.id == request.user.id or
@@ -54,7 +54,6 @@ class OrderPermissions(permissions.BasePermission):
                 )
             elif view.action == "destroy":
                 return request.user.type == 'ADMIN'
-            return False
         except User.DoesNotExist:
             return False
 
