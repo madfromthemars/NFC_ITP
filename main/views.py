@@ -53,20 +53,19 @@ class LoginAPIView(generics.GenericAPIView):
             res['user']['orders'] = OrderSerializer(orders, many=True).data
             res['user']['company'] = company
         elif user.type == "COMPANY":
-            # Number of users
-            NoU = User.objects.filter(created_by=user.id).count()
-            NoU_orders_new = Order.objects.filter(user_id__created_by=user.id,
-                                                  status="NEW").count()
-            NoU_orders_process = Order.objects.filter(user_id__created_by=user.id,
-                                                      status="IN PROCESS").count()
-            NoU_orders_ready = Order.objects.filter(user_id__created_by=user.id,
-                                                    status="READY").count()
+            Num_User = User.objects.filter(created_by=user.id).count()
+            Num_Orders_Tot = Order.objects.filter(user_id__created_by=user.id).count()
+            Num_Orders_New = Order.objects.filter(user_id__created_by=user.id, status="NEW").count()
+            Num_Orders_process = Order.objects.filter(user_id__created_by=user.id, status="IN PROCESS").count()
+            Num_Orders_ready = Order.objects.filter(user_id__created_by=user.id, status="READY").count()
             res['data'] = {
-                'Num_Users': NoU,
-                'NumUser_Orders': {
-                    'new': NoU_orders_new,
-                    'process': NoU_orders_process,
-                    'ready': NoU_orders_ready},
+                'Num_Users': Num_User,
+                'orders': {
+                    'tot': Num_Orders_Tot,
+                    'new': Num_Orders_New,
+                    'process': Num_Orders_process,
+                    'ready': Num_Orders_ready
+                }
             }
         elif user.type == "POLYGRAPHY":
             Num_Orders_tot = Order.objects.count()
@@ -75,6 +74,21 @@ class LoginAPIView(generics.GenericAPIView):
             Num_Orders_read = Order.objects.filter(status="READY").count()
             res['data'] = {
                 'orders': {
+                    'tot': Num_Orders_tot,
+                    'new': Num_Orders_new,
+                    'process': Num_Orders_proc,
+                    'ready': Num_Orders_read
+                }
+            }
+        elif user.type == "ADMIN":
+            Num_Users = User.objects.all().count()
+            Num_Orders_tot = Order.objects.all().count()
+            Num_Orders_new = Order.objects.filter(status="NEW").count()
+            Num_Orders_proc = Order.objects.filter(status="IN PROCESS").count()
+            Num_Orders_read = Order.objects.filter(status="READY").count()
+            res['data'] = {
+                'Num_Users': Num_Users,
+                'order': {
                     'tot': Num_Orders_tot,
                     'new': Num_Orders_new,
                     'process': Num_Orders_proc,
