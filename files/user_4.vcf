@@ -2,11 +2,11 @@ BEGIN:VCARD
 VERSION:3.0
 ADR:;;;;;;
 BDAY:None
-EMAIL:
-FN:awdadw 124124daw
-N:124124daw;awdadw;;;
-NICKNAME:sUser
-ORG:I;t; ;P;a;r;k
+EMAIL:suser@mail.com
+FN:awd awd
+N:awd;awd;;;
+NICKNAME:sUser1
+ORG:I;T; ;P;A;R;K
 ROLE:Executive Director
-TEL:+12 4 1424
+TEL:war
 END:VCARD
