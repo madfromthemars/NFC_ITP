@@ -24,6 +24,7 @@ jobs:
             printf "${{ secrets.PASSWORD }}\n" | sudo -S git pull
             sudo su
             source .venv/bin/activate
+            python -m pip install -r requirements.txt
             python manage.py migrate
             deactivate
             sudo systemctl restart gunicorn_nfc
