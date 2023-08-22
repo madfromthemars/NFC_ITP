@@ -44,7 +44,10 @@ INSTALLED_APPS = [
     # 3rd party
     'corsheaders',
     'rest_framework',
-    'rest_framework_simplejwt.token_blacklist'
+    'rest_framework_simplejwt.token_blacklist',
+    #   -> Documentation
+    # 'django.contrib.staticfiles',  # required for serving swagger ui's css/js files
+    'drf_yasg',
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -96,6 +99,18 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'NFC.wsgi.application'
+
+SWAGGER_SETTINGS = {
+    'USE_SESSION_AUTH': False,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
