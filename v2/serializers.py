@@ -24,7 +24,7 @@ class getContact_Serializer(serializers.Serializer):
 
 class Login_Serializer(serializers.Serializer):
     username = serializers.CharField(max_length=255, min_length=3)
-    password = serializers.CharField(max_length=68, min_length=6, write_only=True)
+    password = serializers.CharField(max_length=16, min_length=6, write_only=True)
     tokens = serializers.SerializerMethodField()
     @staticmethod
     def get_tokens(obj):
@@ -42,6 +42,12 @@ class Login_Serializer(serializers.Serializer):
         if not user.is_active:
             raise AuthenticationFailed('Account disabled, contact Admin')
         return {'tokens': user.tokens, 'username': username}
+
+
+class ChangePassword_Serializer(serializers.Serializer):
+    old_password = serializers.CharField(max_length=16, min_length=6)
+    new_password = serializers.CharField(max_length=16, min_length=6)
+    new_password_dup = serializers.CharField(max_length=16, min_length=6)
 
 
 
