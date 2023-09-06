@@ -4,7 +4,7 @@ import random
 
 def generate_Password():
     password = ''
-    for i in range(6):
+    for i in range(8):
         adder = random.choice((
             string.ascii_lowercase, string.ascii_uppercase, string.digits
         ))

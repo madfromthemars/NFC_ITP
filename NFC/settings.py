@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import datetime
 from pathlib import Path
+
+import django.core.mail.backends.console
+
 from .utils import CLIENT_URL, SERVER_URL, ACCESS_TOKEN_LIFE_TIME_M, REFRESH_TOKEN_LIFE_TIME_H, ALLOWED_HOSTS, DEBUG
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -161,3 +164,13 @@ STATIC_ROOT = BASE_DIR / 'static'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+DEFAULT_FROM_EMAIL = 'forsmtp.ab@gmail.com'
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = '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'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
