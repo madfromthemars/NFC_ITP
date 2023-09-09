@@ -91,7 +91,7 @@ def Logout_View(request, *args, **kwargs):
     methods=['POST'],
 )
 @api_view(['POST'])
-@permission_classes([IsAuthenticated, ResetPasswordPermission])
+# @permission_classes([IsAuthenticated, ResetPasswordPermission])
 def ResetPassword_View(request, *args, **kwargs):
     try:
         username = kwargs.get('username' or '')
